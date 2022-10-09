@@ -1,24 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
+import About from "./components/About";
+import Inventory from "./components/Inventory";
+import Orders from "./components/Orders";
+import Shop from "./components/Shop";
+import Main from "./layout/Main";
+import { productAndCardLoader } from "./Utility/productAndCardLoader";
 
 function App() {
+  // const router = createBrowserRouter([
+  //   {
+  //     path: '/',
+  //     element: <Main />,
+  //     children: [
+  //       {
+  //         path: '/',
+  //         loader: () => fetch('products.json'),
+  //         element: <Shop />
+  //       },
+  //       {
+  //         path: 'orders',
+  //         element: <Orders />
+  //       },
+  //       {
+  //         path: 'inventory',
+  //         element: <Inventory />
+  //       },
+  //       {
+  //         path: 'about',
+  //         element: <About />
+  //       },
+  //     ]
+  //   }
+  // ])
+
+  const router = createBrowserRouter(createRoutesFromElements(
+    <Route path="/" element={<Main />}>
+      <Route index element={<Shop />} loader={() => productAndCardLoader()} />
+      <Route path="/shop" element={<Shop />} loader={() => productAndCardLoader()} />
+      <Route path="/orders" element={<Orders />} loader={() => productAndCardLoader()} />
+      <Route path="/inventory" element={<Inventory />} />
+      <Route path="/about" element={<About />} />
+    </Route>
+  ))
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <RouterProvider router={router} />
   );
 }
 
